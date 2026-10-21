@@ -1,0 +1,160 @@
+{
+  "dataset": "synthetic trays, seed 2026. Not a field trial.",
+  "frontal": {
+    "images": 24,
+    "images_with_exact_count": 24,
+    "count_accuracy": 1.0,
+    "diameter_mae_mm": 0.29,
+    "diameter_p95_mm": 0.48,
+    "fruits_scored": 114,
+    "grade_accuracy": 1.0,
+    "ripeness_accuracy": 1.0,
+    "confusion": {
+      "A": {
+        "A": 38,
+        "B": 0,
+        "C": 0
+      },
+      "B": {
+        "A": 0,
+        "B": 45,
+        "C": 0
+      },
+      "C": {
+        "A": 0,
+        "B": 0,
+        "C": 31
+      }
+    }
+  },
+  "quality_gate": {
+    "bad_shots": 5,
+    "good_shots": 8,
+    "recall": 1.0,
+    "precision": 1.0,
+    "bad_caught": 5,
+    "good_rejected": 0
+  },
+  "agent": {
+    "cases": 14,
+    "agent_success": 14,
+    "single_pass_success": 12,
+    "agent_rate": 1.0,
+    "single_pass_rate": 0.857,
+    "note": "The agent routed or refused correctly on all 14 cases. Single pass missed the dark tray, because it refuses instead of lifting gamma, and the cut-off fruit, because it routes without asking. A retake counts as success for blur, glare, a missing marker, and a red tray.",
+    "rows": [
+      {
+        "kind": "clean",
+        "expected": "processing",
+        "agent": "processing",
+        "single": "processing",
+        "agent_ok": true,
+        "single_ok": true
+      },
+      {
+        "kind": "clean",
+        "expected": "processing",
+        "agent": "processing",
+        "single": "processing",
+        "agent_ok": true,
+        "single_ok": true
+      },
+      {
+        "kind": "clean",
+        "expected": "processing",
+        "agent": "processing",
+        "single": "processing",
+        "agent_ok": true,
+        "single_ok": true
+      },
+      {
+        "kind": "clean",
+        "expected": "local",
+        "agent": "local",
+        "single": "local",
+        "agent_ok": true,
+        "single_ok": true
+      },
+      {
+        "kind": "clean",
+        "expected": "local",
+        "agent": "local",
+        "single": "local",
+        "agent_ok": true,
+        "single_ok": true
+      },
+      {
+        "kind": "clean",
+        "expected": "local",
+        "agent": "local",
+        "single": "local",
+        "agent_ok": true,
+        "single_ok": true
+      },
+      {
+        "kind": "clean",
+        "expected": "processing",
+        "agent": "processing",
+        "single": "processing",
+        "agent_ok": true,
+        "single_ok": true
+      },
+      {
+        "kind": "clean",
+        "expected": "local",
+        "agent": "local",
+        "single": "local",
+        "agent_ok": true,
+        "single_ok": true
+      },
+      {
+        "kind": "dark",
+        "expected": "local",
+        "agent": "local",
+        "single": "fail",
+        "agent_ok": true,
+        "single_ok": false
+      },
+      {
+        "kind": "blur",
+        "expected": "retake",
+        "agent": "retake",
+        "single": "fail",
+        "agent_ok": true,
+        "single_ok": true
+      },
+      {
+        "kind": "glare",
+        "expected": "retake",
+        "agent": "retake",
+        "single": "fail",
+        "agent_ok": true,
+        "single_ok": true
+      },
+      {
+        "kind": "marker",
+        "expected": "retake",
+        "agent": "retake",
+        "single": "fail",
+        "agent_ok": true,
+        "single_ok": true
+      },
+      {
+        "kind": "red_tray",
+        "expected": "retake",
+        "agent": "retake",
+        "single": "fail",
+        "agent_ok": true,
+        "single_ok": true
+      },
+      {
+        "kind": "review",
+        "expected": "review",
+        "agent": "needs_review",
+        "single": "routed_anyway",
+        "agent_ok": true,
+        "single_ok": false
+      }
+    ]
+  }
+}

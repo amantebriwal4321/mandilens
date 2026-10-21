@@ -1,0 +1,32 @@
+flowchart TB
+  subgraph client [Browser]
+    ui[Upload photo and grading slip]
+  end
+  subgraph aws [AWS serverless]
+    api[API Gateway HTTP API]
+    presign[Presign Lambda]
+    vision[Vision Lambda arm64]
+    agentfn[Agent Lambda arm64]
+    bucket[S3 uploads expire after 7 days]
+    table[DynamoDB lots and traces]
+    logs[CloudWatch logs and metrics]
+    model[Bedrock Nova Lite optional]
+  end
+  subgraph cv [OpenCV 5]
+    quality[Quality gate]
+    marker[ArUco marker and scale]
+    segment[Chroma mask and watershed]
+    measure[Diameter ripeness defect shape]
+    bands[House grade A B or C]
+  end
+  ui --> api
+  api --> presign --> bucket
+  api --> vision --> quality
+  api --> agentfn
+  agentfn --> quality
+  quality --> marker --> segment --> measure --> bands
+  vision --> bucket
+  agentfn --> bucket
+  agentfn --> table
+  agentfn --> logs
+  agentfn --> model

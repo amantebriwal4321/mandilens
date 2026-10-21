@@ -1,0 +1,20 @@
+flowchart TD
+  start[Photo arrives] --> inspect[inspect with OpenCV 5]
+  inspect --> blur{Blur score under 80?}
+  blur -->|yes, first time| sharpen[enhance sharpen]
+  sharpen --> inspect
+  blur -->|still soft| retake1[request_retake]
+  blur -->|no| dark{Brightness under 85?}
+  dark -->|yes, first time| gamma[enhance gamma]
+  gamma --> inspect
+  dark -->|still dark| retake2[request_retake]
+  dark -->|no| marker{50 mm marker found?}
+  marker -->|no| retake3[request_retake]
+  marker -->|yes| tray{Glare or colorful tray?}
+  tray -->|yes| retake4[request_retake]
+  tray -->|no| fruit{Any fruit under 0.70 confidence?}
+  fruit -->|yes| human[ask_human]
+  human --> person[Person accepts or overrides]
+  person --> route[route_lot]
+  fruit -->|no| record[record_lot]
+  record --> route

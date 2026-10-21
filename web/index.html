@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>MandiLens</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,560;9..144,680&family=IBM+Plex+Sans:wght@400;500;600&display=swap" rel="stylesheet">
+  <link rel="icon" href="/favicon.svg" type="image/svg+xml">
+  <link rel="stylesheet" href="/static/styles.css">
+</head>
+<body>
+  <header class="top">
+    <div class="brand">
+      <span class="stamp">ML</span>
+      <div>
+        <p class="kicker">OpenCV 5 tray grader</p>
+        <h1>MandiLens</h1>
+      </div>
+    </div>
+    <p class="lede">Put tomatoes on a plain tray next to the printed marker. The photo is measured, and the agent only routes a lot it trusts.</p>
+  </header>
+
+  <main>
+    <section class="panel shot" aria-labelledby="shot-title">
+      <h2 id="shot-title">The shot</h2>
+      <form id="grade-form">
+        <label class="drop" id="drop">
+          <input id="file" name="file" type="file" accept="image/*" capture="environment">
+          <span class="drop-title">Drop a photo, or take one</span>
+          <span class="drop-note" id="file-name">JPEG or PNG, up to 8 MB. Shoot from above.</span>
+        </label>
+        <label class="marker-size">
+          Marker width
+          <input id="marker-mm" name="marker_mm" type="number" min="10" max="200" step="1" value="50">
+          mm
+        </label>
+        <button class="primary" type="submit" id="grade-button">Grade this tray</button>
+      </form>
+      <div class="samples">
+        <p>Try a sample tray</p>
+        <div class="sample-row" id="sample-row"></div>
+      </div>
+      <p class="marker-link"><a href="/api/marker.pdf">Print the 50 mm marker</a> <span>(black square, not the white border)</span></p>
+    </section>
+
+    <section class="panel slip" aria-live="polite" aria-labelledby="slip-title">
+      <h2 id="slip-title">The slip</h2>
+      <div id="slip-body">
+        <p class="empty">No lot yet. A good photo shows every fruit and the whole marker, on a light tray, without a lamp in the lens.</p>
+      </div>
+    </section>
+  </main>
+
+  <footer>
+    <p id="health">Checking OpenCV…</p>
+    <p>House bands, not an AGMARK certificate. Local mode keeps the lot in memory only.</p>
+  </footer>
+  <script src="/static/app.js"></script>
+</body>
+</html>

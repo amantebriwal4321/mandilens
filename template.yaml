@@ -1,0 +1,226 @@
+AWSTemplateFormatVersion: "2010-09-09"
+Transform: AWS::Serverless-2016-10-31
+Description: MandiLens. OpenCV 5 grading on arm64 Lambda, photos in S3, lots in DynamoDB.
+
+Parameters:
+  BedrockModelId:
+    Type: String
+    Default: amazon.nova-lite-v1:0
+    Description: Bedrock model id. Leave the planner off until this model is enabled in the account.
+  AllowedOrigin:
+    Type: String
+    Default: "*"
+    Description: Browser origin allowed to call the API. Tighten this before a real mandi uses it.
+
+Globals:
+  Function:
+    Runtime: python3.12
+    Architectures:
+      - arm64
+    Timeout: 60
+    MemorySize: 1536
+    Tracing: Active
+    Environment:
+      Variables:
+        UPLOADS_BUCKET: !Ref UploadsBucket
+        LOTS_TABLE: !Ref LotsTable
+        BEDROCK_MODEL_ID: !Ref BedrockModelId
+        BEDROCK_ENABLED: "false"
+        MARKER_MM: "50"
+
+Resources:
+  HttpApi:
+    Type: AWS::Serverless::HttpApi
+    Properties:
+      StageName: prod
+      DefaultRouteSettings:
+        ThrottlingBurstLimit: 20
+        ThrottlingRateLimit: 10
+        DetailedMetricsEnabled: true
+      CorsConfiguration:
+        AllowOrigins:
+          - !Ref AllowedOrigin
+        AllowMethods:
+          - GET
+          - POST
+          - OPTIONS
+        AllowHeaders:
+          - content-type
+          - accept
+
+  UploadsBucket:
+    Type: AWS::S3::Bucket
+    Properties:
+      BucketEncryption:
+        ServerSideEncryptionConfiguration:
+          - ServerSideEncryptionByDefault:
+              SSEAlgorithm: AES256
+      PublicAccessBlockConfiguration:
+        BlockPublicAcls: true
+        BlockPublicPolicy: true
+        IgnorePublicAcls: true
+        RestrictPublicBuckets: true
+      LifecycleConfiguration:
+        Rules:
+          - Id: expire-uploads
+            Status: Enabled
+            ExpirationInDays: 7
+            Prefix: uploads/
+      CorsConfiguration:
+        CorsRules:
+          - AllowedHeaders:
+              - "*"
+            AllowedMethods:
+              - PUT
+            AllowedOrigins:
+              - !Ref AllowedOrigin
+            MaxAge: 600
+
+  LotsTable:
+    Type: AWS::DynamoDB::Table
+    Properties:
+      BillingMode: PAY_PER_REQUEST
+      AttributeDefinitions:
+        - AttributeName: lot_id
+          AttributeType: S
+      KeySchema:
+        - AttributeName: lot_id
+          KeyType: HASH
+      PointInTimeRecoverySpecification:
+        PointInTimeRecoveryEnabled: true
+      SSESpecification:
+        SSEEnabled: true
+
+  OpenCVLayer:
+    Type: AWS::Serverless::LayerVersion
+    Properties:
+      LayerName: mandilens-opencv5
+      Description: opencv-python-headless 5.0.0.93 for Python 3.12 on arm64
+      ContentUri: layers/opencv/
+      CompatibleRuntimes:
+        - python3.12
+      CompatibleArchitectures:
+        - arm64
+      RetentionPolicy: Delete
+    Metadata:
+      BuildMethod: python3.12
+      BuildArchitecture: arm64
+
+  HealthFunction:
+    Type: AWS::Serverless::Function
+    Properties:
+      CodeUri: src/
+      Handler: mandilens.aws.handler.health_handler
+      MemorySize: 128
+      Timeout: 5
+      Events:
+        Health:
+          Type: HttpApi
+          Properties:
+            ApiId: !Ref HttpApi
+            Method: GET
+            Path: /health
+
+  PresignFunction:
+    Type: AWS::Serverless::Function
+    Properties:
+      CodeUri: src/
+      Handler: mandilens.aws.handler.presign_handler
+      MemorySize: 256
+      Timeout: 10
+      Policies:
+        - Statement:
+            - Effect: Allow
+              Action:
+                - s3:PutObject
+              Resource: !Sub "${UploadsBucket.Arn}/uploads/*"
+      Events:
+        Presign:
+          Type: HttpApi
+          Properties:
+            ApiId: !Ref HttpApi
+            Method: POST
+            Path: /uploads
+
+  VisionFunction:
+    Type: AWS::Serverless::Function
+    Properties:
+      CodeUri: src/
+      Handler: mandilens.aws.handler.vision_handler
+      Layers:
+        - !Ref OpenCVLayer
+      Policies:
+        - Statement:
+            - Effect: Allow
+              Action:
+                - s3:GetObject
+              Resource: !Sub "${UploadsBucket.Arn}/uploads/*"
+        - Statement:
+            - Effect: Allow
+              Action:
+                - cloudwatch:PutMetricData
+              Resource: "*"
+              Condition:
+                StringEquals:
+                  cloudwatch:namespace: MandiLens
+      Events:
+        Inspect:
+          Type: HttpApi
+          Properties:
+            ApiId: !Ref HttpApi
+            Method: POST
+            Path: /inspect
+
+  AgentFunction:
+    Type: AWS::Serverless::Function
+    Properties:
+      CodeUri: src/
+      Handler: mandilens.aws.handler.api_handler
+      Layers:
+        - !Ref OpenCVLayer
+      Policies:
+        - Statement:
+            - Effect: Allow
+              Action:
+                - s3:GetObject
+              Resource: !Sub "${UploadsBucket.Arn}/uploads/*"
+        - DynamoDBCrudPolicy:
+            TableName: !Ref LotsTable
+        - Statement:
+            - Effect: Allow
+              Action:
+                - bedrock:InvokeModel
+              Resource:
+                - !Sub "arn:${AWS::Partition}:bedrock:*::foundation-model/${BedrockModelId}"
+        - Statement:
+            - Effect: Allow
+              Action:
+                - cloudwatch:PutMetricData
+              Resource: "*"
+              Condition:
+                StringEquals:
+                  cloudwatch:namespace: MandiLens
+      Events:
+        Grade:
+          Type: HttpApi
+          Properties:
+            ApiId: !Ref HttpApi
+            Method: POST
+            Path: /lots
+        Review:
+          Type: HttpApi
+          Properties:
+            ApiId: !Ref HttpApi
+            Method: POST
+            Path: /lots/{lot_id}/review
+
+Outputs:
+  ApiUrl:
+    Description: HTTP API base URL
+    Value: !GetAtt HttpApi.ApiEndpoint
+  UploadsBucketName:
+    Description: Bucket that stores tray photos for 7 days
+    Value: !Ref UploadsBucket
+  LotsTableName:
+    Description: DynamoDB table of lots and agent traces
+    Value: !Ref LotsTable

@@ -1,0 +1,145 @@
+{
+  "lot_id": "2e40b6a5caf7",
+  "status": "retake",
+  "planner": "policy",
+  "destination": null,
+  "reason": "Blur score is still 11 after sharpen. Hold the phone steady and retake.",
+  "note": "",
+  "marker_mm": 50.0,
+  "created_at": "2026-10-21T12:00:10+00:00",
+  "review_ids": [],
+  "steps": [
+    {
+      "index": 1,
+      "tool": "inspect",
+      "because": "First look at the photo.",
+      "arguments": {
+        "marker_mm": 50.0
+      },
+      "metrics": {
+        "blur_score": 6.3,
+        "blur_ok": false,
+        "brightness": 191.2,
+        "exposure_ok": true,
+        "glare_fraction": 0.0,
+        "glare_ok": true,
+        "tray_chroma": 3.6,
+        "marker_found": true,
+        "marker_id": 0,
+        "mm_per_px": 0.5051,
+        "mask_fraction": 0.0788,
+        "background_ok": true,
+        "quality_ok": false,
+        "fruit_count": 5,
+        "reasons": [
+          "blur"
+        ]
+      }
+    },
+    {
+      "index": 2,
+      "tool": "enhance",
+      "because": "Blur score is 6, under 80. Sharpen once and inspect again.",
+      "arguments": {
+        "op": "sharpen"
+      },
+      "metrics": {
+        "blur_score": 6.3,
+        "blur_ok": false,
+        "brightness": 191.2,
+        "exposure_ok": true,
+        "glare_fraction": 0.0,
+        "glare_ok": true,
+        "tray_chroma": 3.6,
+        "marker_found": true,
+        "marker_id": 0,
+        "mm_per_px": 0.5051,
+        "mask_fraction": 0.0788,
+        "background_ok": true,
+        "quality_ok": false,
+        "fruit_count": 5,
+        "reasons": [
+          "blur"
+        ]
+      }
+    },
+    {
+      "index": 3,
+      "tool": "inspect",
+      "because": "Inspect again after sharpen.",
+      "arguments": {
+        "marker_mm": 50.0
+      },
+      "metrics": {
+        "blur_score": 11.1,
+        "blur_ok": false,
+        "brightness": 191.2,
+        "exposure_ok": true,
+        "glare_fraction": 0.0,
+        "glare_ok": true,
+        "tray_chroma": 3.6,
+        "marker_found": true,
+        "marker_id": 0,
+        "mm_per_px": 0.5049,
+        "mask_fraction": 0.0785,
+        "background_ok": true,
+        "quality_ok": false,
+        "fruit_count": 5,
+        "reasons": [
+          "blur"
+        ]
+      }
+    },
+    {
+      "index": 4,
+      "tool": "request_retake",
+      "because": "Blur score is still 11 after sharpen. Hold the phone steady and retake.",
+      "arguments": {},
+      "metrics": {
+        "blur_score": 11.1,
+        "blur_ok": false,
+        "brightness": 191.2,
+        "exposure_ok": true,
+        "glare_fraction": 0.0,
+        "glare_ok": true,
+        "tray_chroma": 3.6,
+        "marker_found": true,
+        "marker_id": 0,
+        "mm_per_px": 0.5049,
+        "mask_fraction": 0.0785,
+        "background_ok": true,
+        "quality_ok": false,
+        "fruit_count": 5,
+        "reasons": [
+          "blur"
+        ]
+      }
+    }
+  ],
+  "fruits": [],
+  "quality": {
+    "blur_score": 11.1,
+    "blur_ok": false,
+    "brightness": 191.2,
+    "exposure_ok": true,
+    "glare_fraction": 0.0,
+    "glare_ok": true,
+    "tray_chroma": 3.6,
+    "marker_found": true,
+    "marker_id": 0,
+    "mm_per_px": 0.5049,
+    "mask_fraction": 0.0785,
+    "background_ok": true,
+    "quality_ok": false,
+    "fruit_count": 5,
+    "reasons": [
+      "blur"
+    ]
+  },
+  "timings_ms": {
+    "quality": 10.22,
+    "marker": 2.53,
+    "rectify": 0.03,
+    "segment": 71.7
+  }
+}

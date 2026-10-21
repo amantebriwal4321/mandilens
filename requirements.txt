@@ -1,0 +1,6 @@
+opencv-python-headless==5.0.0.93
+numpy==2.2.6
+fastapi==0.156.8
+uvicorn==0.54.0
+python-multipart==0.0.32
+boto3==1.43.116

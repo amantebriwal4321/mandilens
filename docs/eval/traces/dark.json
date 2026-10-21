@@ -1,0 +1,263 @@
+{
+  "lot_id": "97f64a7394f1",
+  "status": "routed",
+  "planner": "policy",
+  "destination": "local",
+  "reason": "Mixed lot: 1 A, 4 B, 1 C. Local retail fits better than the wholesale mandi.",
+  "note": "",
+  "marker_mm": 50.0,
+  "created_at": "2026-10-21T12:00:11+00:00",
+  "review_ids": [],
+  "steps": [
+    {
+      "index": 1,
+      "tool": "inspect",
+      "because": "First look at the photo.",
+      "arguments": {
+        "marker_mm": 50.0
+      },
+      "metrics": {
+        "blur_score": 725.0,
+        "blur_ok": true,
+        "brightness": 64.6,
+        "exposure_ok": false,
+        "glare_fraction": 0.0,
+        "glare_ok": true,
+        "tray_chroma": 2.2,
+        "marker_found": true,
+        "marker_id": 0,
+        "mm_per_px": 0.5051,
+        "mask_fraction": 0.075,
+        "background_ok": true,
+        "quality_ok": false,
+        "fruit_count": 6,
+        "reasons": [
+          "dark"
+        ]
+      }
+    },
+    {
+      "index": 2,
+      "tool": "enhance",
+      "because": "Mean brightness is 65, under 85. Lift gamma and inspect again.",
+      "arguments": {
+        "op": "gamma"
+      },
+      "metrics": {
+        "blur_score": 725.0,
+        "blur_ok": true,
+        "brightness": 64.6,
+        "exposure_ok": false,
+        "glare_fraction": 0.0,
+        "glare_ok": true,
+        "tray_chroma": 2.2,
+        "marker_found": true,
+        "marker_id": 0,
+        "mm_per_px": 0.5051,
+        "mask_fraction": 0.075,
+        "background_ok": true,
+        "quality_ok": false,
+        "fruit_count": 6,
+        "reasons": [
+          "dark"
+        ]
+      }
+    },
+    {
+      "index": 3,
+      "tool": "inspect",
+      "because": "Inspect again after gamma.",
+      "arguments": {
+        "marker_mm": 50.0
+      },
+      "metrics": {
+        "blur_score": 710.3,
+        "blur_ok": true,
+        "brightness": 127.1,
+        "exposure_ok": true,
+        "glare_fraction": 0.0,
+        "glare_ok": true,
+        "tray_chroma": 2.0,
+        "marker_found": true,
+        "marker_id": 0,
+        "mm_per_px": 0.5051,
+        "mask_fraction": 0.075,
+        "background_ok": true,
+        "quality_ok": true,
+        "fruit_count": 6,
+        "reasons": []
+      }
+    },
+    {
+      "index": 4,
+      "tool": "record_lot",
+      "because": "The shot is trusted. Record the lot before routing it.",
+      "arguments": {
+        "fruit_count": 6
+      },
+      "metrics": {
+        "blur_score": 710.3,
+        "blur_ok": true,
+        "brightness": 127.1,
+        "exposure_ok": true,
+        "glare_fraction": 0.0,
+        "glare_ok": true,
+        "tray_chroma": 2.0,
+        "marker_found": true,
+        "marker_id": 0,
+        "mm_per_px": 0.5051,
+        "mask_fraction": 0.075,
+        "background_ok": true,
+        "quality_ok": true,
+        "fruit_count": 6,
+        "reasons": []
+      }
+    },
+    {
+      "index": 5,
+      "tool": "route_lot",
+      "because": "Mixed lot: 1 A, 4 B, 1 C. Local retail fits better than the wholesale mandi.",
+      "arguments": {
+        "destination": "local"
+      },
+      "metrics": {
+        "blur_score": 710.3,
+        "blur_ok": true,
+        "brightness": 127.1,
+        "exposure_ok": true,
+        "glare_fraction": 0.0,
+        "glare_ok": true,
+        "tray_chroma": 2.0,
+        "marker_found": true,
+        "marker_id": 0,
+        "mm_per_px": 0.5051,
+        "mask_fraction": 0.075,
+        "background_ok": true,
+        "quality_ok": true,
+        "fruit_count": 6,
+        "reasons": []
+      }
+    }
+  ],
+  "fruits": [
+    {
+      "fruit_id": 1,
+      "center_x": 230.0,
+      "center_y": 260.0,
+      "diameter_px": 122.15,
+      "diameter_mm": 61.69,
+      "ripeness": "red",
+      "defect_pct": 0.0,
+      "solidity": 0.99,
+      "grade": "A",
+      "size_band": "A",
+      "defect_band": "A",
+      "confidence": 0.94,
+      "touches_border": false,
+      "needs_review": false
+    },
+    {
+      "fruit_id": 2,
+      "center_x": 300.0,
+      "center_y": 490.0,
+      "diameter_px": 138.41,
+      "diameter_mm": 69.9,
+      "ripeness": "turning",
+      "defect_pct": 8.39,
+      "solidity": 0.99,
+      "grade": "B",
+      "size_band": "A",
+      "defect_band": "B",
+      "confidence": 0.94,
+      "touches_border": false,
+      "needs_review": false
+    },
+    {
+      "fruit_id": 3,
+      "center_x": 420.0,
+      "center_y": 280.0,
+      "diameter_px": 90.51,
+      "diameter_mm": 45.71,
+      "ripeness": "green",
+      "defect_pct": 0.0,
+      "solidity": 0.99,
+      "grade": "B",
+      "size_band": "B",
+      "defect_band": "A",
+      "confidence": 0.94,
+      "touches_border": false,
+      "needs_review": false
+    },
+    {
+      "fruit_id": 4,
+      "center_x": 500.0,
+      "center_y": 180.0,
+      "diameter_px": 94.02,
+      "diameter_mm": 47.49,
+      "ripeness": "red",
+      "defect_pct": 0.0,
+      "solidity": 0.93,
+      "grade": "B",
+      "size_band": "B",
+      "defect_band": "A",
+      "confidence": 0.94,
+      "touches_border": false,
+      "needs_review": false
+    },
+    {
+      "fruit_id": 5,
+      "center_x": 560.0,
+      "center_y": 520.0,
+      "diameter_px": 70.0,
+      "diameter_mm": 35.35,
+      "ripeness": "red",
+      "defect_pct": 0.0,
+      "solidity": 0.98,
+      "grade": "C",
+      "size_band": "C",
+      "defect_band": "A",
+      "confidence": 0.94,
+      "touches_border": false,
+      "needs_review": false
+    },
+    {
+      "fruit_id": 6,
+      "center_x": 574.52,
+      "center_y": 196.0,
+      "diameter_px": 94.97,
+      "diameter_mm": 47.96,
+      "ripeness": "green",
+      "defect_pct": 0.0,
+      "solidity": 0.99,
+      "grade": "B",
+      "size_band": "B",
+      "defect_band": "A",
+      "confidence": 0.94,
+      "touches_border": false,
+      "needs_review": false
+    }
+  ],
+  "quality": {
+    "blur_score": 710.3,
+    "blur_ok": true,
+    "brightness": 127.1,
+    "exposure_ok": true,
+    "glare_fraction": 0.0,
+    "glare_ok": true,
+    "tray_chroma": 2.0,
+    "marker_found": true,
+    "marker_id": 0,
+    "mm_per_px": 0.5051,
+    "mask_fraction": 0.075,
+    "background_ok": true,
+    "quality_ok": true,
+    "fruit_count": 6,
+    "reasons": []
+  },
+  "timings_ms": {
+    "quality": 15.36,
+    "marker": 1.7,
+    "rectify": 0.04,
+    "segment": 74.42
+  }
+}
