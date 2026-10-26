@@ -1,5 +1,14 @@
 # MandiLens
 
+## Live
+
+- Web app: https://mandilens-aman.vercel.app
+- API (AWS Lambda + API Gateway, ap-south-1): https://7yx0rummyf.execute-api.ap-south-1.amazonaws.com/prod
+  - `GET /health`, `POST /inspect`, `POST /lots`, `POST /lots/{lot_id}/review`, `POST /uploads`
+  - Image body: `{"image_base64": "...", "marker_mm": 50}`
+
+The static site is built with `MANDILENS_API=<api url> scripts/build_vercel.sh` and calls the Lambda API directly.
+
 Photograph a tray of tomatoes next to a printed 50 mm marker. OpenCV 5 measures each fruit and grades it A, B, or C. An agent then decides whether to fix the photo, ask for a retake, send a fruit to a person, or route the lot.
 
 Author: Aman Tebriwal, GitHub [amantebriwal4321](https://github.com/amantebriwal4321).

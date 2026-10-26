@@ -1,3 +1,17 @@
+// Set window.MANDILENS_API (see web/config.js) to talk to the AWS Lambda API.
+// Empty means the local FastAPI server at /api.
+const API_BASE = (window.MANDILENS_API || "").replace(/\/$/, "");
+const LAMBDA = API_BASE !== "";
+
+function fileToBase64(file) {
+  return new Promise((resolve, reject) => {
+    const reader = new FileReader();
+    reader.onload = () => resolve(String(reader.result).split(",")[1]);
+    reader.onerror = reject;
+    reader.readAsDataURL(file);
+  });
+}
+
 const form = document.querySelector("#grade-form");
 const fileInput = document.querySelector("#file");
 const fileName = document.querySelector("#file-name");
@@ -16,16 +30,16 @@ const SAMPLE_LABELS = {
   "red-tray.png": "Red tray",
 };
 
-fetch("/api/health")
+fetch(LAMBDA ? API_BASE + "/health" : "/api/health")
   .then((response) => response.json())
   .then((body) => {
-    health.textContent = `OpenCV ${body.opencv} · MandiLens ${body.version}`;
+    health.textContent = LAMBDA ? `AWS Lambda · MandiLens ${body.version}` : `OpenCV ${body.opencv} · MandiLens ${body.version}`;
   })
   .catch(() => {
     health.textContent = "Health check failed.";
   });
 
-fetch("/api/samples")
+fetch(LAMBDA ? "/samples.json" : "/api/samples")
   .then((response) => response.json())
   .then((body) => {
     for (const sample of body.samples) {
@@ -92,7 +106,20 @@ async function grade(data) {
   button.disabled = true;
   slip.innerHTML = '<p class="empty">Reading the tray…</p>';
   try {
-    const response = await fetch("/api/grade", { method: "POST", body: data });
+    let response;
+    if (LAMBDA) {
+      const payload = {
+        image_base64: await fileToBase64(data.get("file")),
+        marker_mm: Number(data.get("marker_mm") || 50),
+      };
+      response = await fetch(API_BASE + "/lots", {
+        method: "POST",
+        headers: { "content-type": "application/json" },
+        body: JSON.stringify(payload),
+      });
+    } else {
+      response = await fetch("/api/grade", { method: "POST", body: data });
+    }
     const body = await response.json();
     if (!response.ok) {
       renderError(messageOf(body));
@@ -246,7 +273,7 @@ function reviewForm(lot) {
       grade: select.value,
     }));
     try {
-      const response = await fetch(`/api/lots/${lot.lot_id}/review`, {
+      const response = await fetch(`${LAMBDA ? API_BASE : "/api"}/lots/${lot.lot_id}/review`, {
         method: "POST",
         headers: { "content-type": "application/json" },
         body: JSON.stringify({ decisions }),
